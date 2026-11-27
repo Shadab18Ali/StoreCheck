@@ -19,7 +19,7 @@ StoreCheck is a free website and Shopify storefront audit tool. It is designed f
 - /api/health returns a basic service health response.
 
 ## Deploy
-The project is configured for a free workers.dev subdomain. Deployment requires an authorized Cloudflare account. A repository-connected deployment workflow can be added after the Cloudflare account is connected and its deployment credentials are configured securely in GitHub Actions. Do not commit API tokens or account secrets to this repository.
+The project is configured for a free workers.dev subdomain. Deployment requires an authorized Cloudflare account. The repository includes a GitHub Actions workflow. On every push to main it type-checks the Worker; after Cloudflare credentials are saved as GitHub repository Actions secrets named CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID, the same workflow deploys automatically to workers.dev. To enable deployment, create a Cloudflare API token with permission to edit Workers for your account, then add that token and your Cloudflare account ID under GitHub → Settings → Secrets and variables → Actions → New repository secret. Do not commit API tokens or account secrets to this repository. Until those secrets exist, validation still runs and deployment is safely skipped.
 
 ## Developer commands
 These commands are for maintainers who choose to work locally; they are not required for a user of the hosted application.
