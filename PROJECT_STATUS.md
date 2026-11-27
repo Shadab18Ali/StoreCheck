@@ -30,13 +30,14 @@ Build a free-first website and Shopify store checker. Users can enter a public w
 - [x] Created the Cloudflare Worker project `storecheck` from the connected GitHub repository.
 - [x] First Cloudflare deployment completed successfully: green Build #9be11e5b, with initialization, cloning, installation, and deployment stages all successful (17 seconds).
 - [x] Confirmed deployment settings in Cloudflare: project `storecheck`, repository `Shadab18Ali/StoreCheck`, branch `main`, root directory `/`, no build command, deploy command `npx wrangler deploy`, and build token named `StoreCheck GitHub Deployment`.
-- [ ] Enable the `workers.dev` subdomain and verify the public URL `storecheck.shadab18ali.workers.dev` (Cloudflare currently shows workers.dev Disabled and No URLs enabled).
+- [x] Enabled the production `workers.dev` URL: `https://storecheck.shadab18ali.workers.dev`.
 - [ ] Configure GitHub repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` for the GitHub Actions deployment workflow, if using that workflow.
 - [x] Verified automatic Cloudflare deployment from GitHub: Cloudflare Overview shows a GitHub-linked `main` build (`27fec49d`) marked Ready after the project-status commit.
 - [ ] Separately verify the GitHub Actions deployment workflow; the earlier Actions run skipped its deploy step because the GitHub repository secrets were blank.
-- [ ] Run live smoke tests against the deployed `/api/health` and `/api/scan` endpoints.
+- [x] Verified the public homepage loads in the user's browser; the landing page and scan form render.
+- [ ] Verify `/api/health` and run an actual website scan through the live UI.
 
-**Deployment note:** Cloudflare now shows a successful first deployment (Build #9be11e5b) from the connected `main` branch. The screenshot labels this deployment “Manually deployed”; automatic deployment on subsequent GitHub commits still needs to be verified. The separate GitHub Actions workflow's deploy step was previously skipped because `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` were blank. Do not treat that workflow as deployed until its own run succeeds.
+**Deployment note:** Cloudflare now shows a successful first deployment (Build #9be11e5b) from the connected `main` branch. Cloudflare's Overview later showed a GitHub-linked `main` build marked Ready. The homepage is now confirmed loading; API and scan behavior still need end-to-end testing. The separate GitHub Actions workflow's deploy step was previously skipped because `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` were blank. Do not treat that workflow as deployed until its own run succeeds.
 
 ## Remaining product and launch work
 
