@@ -76,8 +76,36 @@ async function scanSite(raw:string) {
  const pages:PageResult[]=[home];
  for(const candidate of candidates){try{const p=await fetchHtml(parsePublicUrl(candidate));if(p.url.origin===first.url.origin)pages.push(inspectPage(p.url,p.html));}catch{}}
  const merged=new Map<string,Finding>();
- for(const p of pages){for(const f of p.findings){const key=f.id;const old=merged.get(key);if(!old){merged.set(key,{...f,pages:1});}else{old.pages=(old.pages||1)+1;if(f.status==="fail"||old.status==="fail")old.status="fail";else if(f.status==="warning"||old.status==="warning")old.status="warning";old.evidence=old.evidence+"; "+f.evidence;}}}
+ for(const p of pages){for(const f of p.findings){const key=f.id;const old=merged.get(key);if(!old){merged.set(key,{...f,pages:1});}else{old.pages=(old.pages||1)+1;if(f.status==="fail"||old.status==="fail")old.status="fail";else if(f.status==="warning"||old.status==="warning")old.status="warning";}}}
  const findings=[...merged.values()];
+ for(const f of findings){
+  const group=pages.flatMap(p=>p.findings.filter(x=>x.id===f.id).map(x=>({page:new URL(p.url).pathname||"/",finding:x})));
+  const totalPages=group.length;
+  const passedPages=group.filter(x=>x.finding.status==="pass").length;
+  const warningPages=group.filter(x=>x.finding.status==="warning").length;
+  const failedPages=group.filter(x=>x.finding.status==="fail").length;
+  if(f.id==="image-alt"||f.id==="empty-alt"){
+   const totals=group.map(x=>{const m=x.finding.evidence.match(/^(\\d+) of (\\d+) image/);return m?{problem:Number(m[1]),total:Number(m[2])}:{problem:0,total:0};});
+   const problem=totals.reduce((n,x)=>n+x.problem,0),images=totals.reduce((n,x)=>n+x.total,0);
+   f.evidence=f.id==="image-alt"
+    ? problem+" of "+images+" images across "+totalPages+" inspected pages are missing an alt attribute."
+    : problem+" of "+images+" images across "+totalPages+" inspected pages use an empty alt attribute.";
+  }else if(f.id==="h1"){
+   const counts=group.map(x=>Number(x.finding.evidence.match(/Found (\\d+) H1/)?.[1]||0));
+   const exactlyOne=counts.filter(n=>n===1).length;
+   const none=counts.filter(n=>n===0).length;
+   const multiple=counts.filter(n=>n>1).length;
+   f.evidence=exactlyOne+" of "+totalPages+" pages have exactly one H1; "+none+" have none; "+multiple+" have multiple.";
+  }else{
+   const label=f.id==="title"?"a page title":f.id==="description"?"a meta description":f.id==="canonical"?"a canonical link":f.id==="lang"?"an HTML language attribute":f.id==="viewport"?"a mobile viewport tag":f.id==="indexability"?"noindex directive status":"this check";
+   f.evidence=passedPages+" of "+totalPages+" pages passed "+label+"; "+warningPages+" need review; "+failedPages+" failed.";
+   if(failedPages+warningPages>0){
+    const affected=group.filter(x=>x.finding.status!=="pass").slice(0,3).map(x=>x.page);
+    if(affected.length)f.evidence+=" Affected paths: "+affected.join(", ")+".";
+   }
+  }
+  if(f.status==="pass")f.fix="No action required based on the sampled pages. Recheck after significant site changes.";
+ }
  const robots=await checkResource(new URL("/robots.txt",first.url));findings.push({id:"robots-file",title:"robots.txt availability",status:robots.ok?"pass":"warning",evidence:robots.status?"HTTP "+robots.status+" for /robots.txt.":"Could not retrieve /robots.txt.",fix:"Make sure robots.txt is intentionally configured and publicly reachable."});
  findings.push({id:"sitemap-file",title:"XML sitemap availability",status:sm.ok?"pass":"warning",evidence:sm.status?"HTTP "+sm.status+" for /sitemap.xml.":"Could not retrieve /sitemap.xml.",fix:"Publish a valid XML sitemap and reference it in robots.txt where appropriate."});
  const https=first.url.protocol==="https:";findings.push({id:"https",title:"HTTPS connection",status:https?"pass":"fail",evidence:https?"The final page loaded over HTTPS.":"The final page loaded over HTTP.","fix":"Serve the entire website over HTTPS and redirect HTTP to HTTPS."});
