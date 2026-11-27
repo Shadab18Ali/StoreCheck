@@ -34,7 +34,7 @@ Build a free-first website and Shopify store checker. Users can enter a public w
 - [ ] Configure GitHub repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` for the GitHub Actions deployment workflow, if using that workflow.
 - [x] Verified automatic Cloudflare deployment from GitHub: Cloudflare Overview shows a GitHub-linked `main` build (`27fec49d`) marked Ready after the project-status commit.
 - [ ] Separately verify the GitHub Actions deployment workflow; the earlier Actions run skipped its deploy step because the GitHub repository secrets were blank.
-- [ ] Run live smoke tests against the deployed `/api/health` and `/api/scan` endpoints after enabling workers.dev.
+- [ ] Run live smoke tests against the deployed `/api/health` and `/api/scan` endpoints after enabling the production workers.dev URL.
 
 **Deployment note:** Cloudflare now shows a successful first deployment (Build #9be11e5b) from the connected `main` branch. The screenshot labels this deployment “Manually deployed”; automatic deployment on subsequent GitHub commits still needs to be verified. The separate GitHub Actions workflow's deploy step was previously skipped because `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` were blank. Do not treat that workflow as deployed until its own run succeeds.
 
