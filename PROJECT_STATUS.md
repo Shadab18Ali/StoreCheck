@@ -27,13 +27,16 @@ Build a free-first website and Shopify store checker. Users can enter a public w
 
 - [x] Cloudflare account dashboard opened.
 - [x] GitHub repository `Shadab18Ali/StoreCheck` selected in the Cloudflare Workers & Pages creation flow.
-- [ ] Finish Cloudflare project creation / first deployment.
-- [ ] Confirm the Worker is deployed and record its actual `workers.dev` URL.
+- [x] Created the Cloudflare Worker project `storecheck` from the connected GitHub repository.
+- [x] First Cloudflare deployment completed successfully: green Build #9be11e5b, with initialization, cloning, installation, and deployment stages all successful (17 seconds).
+- [x] Confirmed deployment settings in Cloudflare: project `storecheck`, repository `Shadab18Ali/StoreCheck`, branch `main`, root directory `/`, no build command, deploy command `npx wrangler deploy`, and build token named `StoreCheck GitHub Deployment`.
+- [ ] Record the actual `workers.dev` URL (not visible in the deployment screenshot).
 - [ ] Configure GitHub repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` for the GitHub Actions deployment workflow, if using that workflow.
-- [ ] Verify a successful GitHub Actions deployment after credentials are configured.
+- [ ] Verify that a new commit to `main` triggers an automatic Cloudflare deployment.
+- [ ] Separately verify the GitHub Actions deployment workflow; the earlier Actions run skipped its deploy step because the GitHub repository secrets were blank.
 - [ ] Run live smoke tests against the deployed `/api/health` and `/api/scan` endpoints.
 
-**Important:** The previously inspected Actions run passed validation, but its deployment step was skipped because the Cloudflare GitHub secrets were blank. That run does not prove that StoreCheck has been deployed. The Cloudflare dashboard's GitHub connection wizard is currently in progress; repository selection alone is not a completed deployment.
+**Deployment note:** Cloudflare now shows a successful first deployment (Build #9be11e5b) from the connected `main` branch. The screenshot labels this deployment “Manually deployed”; automatic deployment on subsequent GitHub commits still needs to be verified. The separate GitHub Actions workflow's deploy step was previously skipped because `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` were blank. Do not treat that workflow as deployed until its own run succeeds.
 
 ## Remaining product and launch work
 
