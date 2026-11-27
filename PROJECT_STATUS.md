@@ -44,9 +44,13 @@ Build a free-first website and Shopify store checker. Users can enter a public w
 - [ ] Review and improve URL validation and SSRF protections, including DNS resolution / private-address checks and redirect handling.
 - [ ] Add abuse protection such as rate limiting and sensible scan quotas before exposing the scanner publicly.
 - [ ] Add robust handling for timeouts, oversized pages, malformed HTML, and unreachable sitemap/robots files.
-- [ ] Test against representative Shopify stores and ordinary websites.
+- [x] Completed first live end-to-end scan against `https://www.kairaliproducts.in`: Shopify detected, 5 pages inspected, score 75/100, 9 passed checks, and 3 finding categories flagged for review.
+- [ ] Retest scan output after the aggregation fix; the first report exposed confusing concatenated evidence across pages.
 - [ ] Review accessibility, mobile layout, and scan-result clarity.
 - [ ] Add automated tests for scanner parsing and security-sensitive URL handling.
+- [x] Identified report clarity issue in first live scan: per-page evidence was concatenated, and passing findings still displayed generic fix text.
+- [x] Improved aggregation to summarize results across sampled pages, including H1 counts and image-alt totals, and changed passing findings to say no action is required.
+- [ ] Confirm the new GitHub commit deploys successfully and retest report clarity.
 - [ ] Document supported checks and known limitations for users.
 - [ ] Decide whether to add scan history, exports, or additional checks after the MVP is stable.
 
